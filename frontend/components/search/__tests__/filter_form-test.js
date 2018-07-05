@@ -9,7 +9,7 @@ const setup = () => {
     updateFilter: jest.fn()
   };
 
-  const filterFormWrapper = shallow(<FilterForm {...props} />);
+  const filterFormWrapper = shallow( <FilterForm {...props} /> );
 
   return {
     filterFormWrapper,
@@ -17,23 +17,28 @@ const setup = () => {
   };
 };
 
-describe("FilterForm", () => {
+describe( "FilterForm", () => {
   const { filterFormWrapper, props } = setup();
+  const filters = filterFormWrapper.find( "input" );
+  const minSeatFilter = filters.first();
+  const maxSeatFilter = filters.last();
 
-  test("should render input elements", () => {
-    // code here
-  });
+  test( "should render input elements", () => {
+    expect( filters.length ).toEqual( 2 );
+    expect( minSeatFilter.props().type ).toEqual( "number" );
+    expect( maxSeatFilter.props().type ).toEqual( "number" );
+  } );
 
-  test("minSeating filter defaults to the passed in props of minSeating", () => {
-    // your code here
-  });
+  test( "minSeating filter defaults to the passed in props of minSeating", () => {
+    expect( minSeatFilter.props().value ).toEqual( 2 );
+  } );
 
-  test("maxSeating filter defaults to the passed in props of minSeating", () => {
-    // your code here
-  });
+  test( "maxSeating filter defaults to the passed in props of minSeating", () => {
+    expect( maxSeatFilter.props().value ).toEqual( 5 );
+  } );
 
-  test("updates filter onChange", () => {
-    // your code here
-    // hint: https://facebook.github.io/jest/docs/en/mock-functions.html
-  });
-});
+  test( "updateFilter gets called onChange", () => {
+    minSeatFilter.props().onChange( { currentTarget: 3 } );
+    expect( props.updateFilter.mock.calls.length ).toBe( 1 );
+  } );
+} );
